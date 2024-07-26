@@ -1,7 +1,11 @@
-mod utils;
+use minigrep::Config;
+use std::{env, process};
 
 fn main() {
-    use utils::get_arguments;
-    let args = get_arguments();
-    println!("Searching for {} in {}", args.query(), args.filepath());
+    let args: Vec<String> = env::args().collect();
+    let config = Config::new(&args);
+    if let Err(e) = minigrep::run(config) {
+        println!("Application error: {}", e);
+        process::exit(1);
+    }
 }
